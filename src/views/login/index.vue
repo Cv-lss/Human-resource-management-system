@@ -55,7 +55,7 @@ export default {
         mobile: '13800000002',
         password: '123456'
       },
-      loading: false,
+      loading: false, // 防止一直点击登录按钮 添加一个loding效果
       rules: { // 表单校验规则
         mobile: [
           { required: true, message: '手机号必填', trigger: 'blur' },
@@ -69,6 +69,7 @@ export default {
       }
     }
   },
+
   methods: {
     // 判断小眼睛是不是睁开还是关闭
     changePwd() {
@@ -97,6 +98,7 @@ export default {
         this.loading = true
         await this.$store.dispatch('user/login', this.loginForm) // 变成同步的
         // console.log(res)
+        this.$router.push('/')
       } catch (error) {
         console.log(error)
       } finally {

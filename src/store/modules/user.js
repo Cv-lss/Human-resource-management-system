@@ -1,4 +1,5 @@
 import { login } from '@/api/user'
+import { setToken } from '@/utils/auth'
 export default {
   namespaced: true,
   state: {
@@ -9,6 +10,8 @@ export default {
     // 修改token
     SETTOKEN(state, token) {
       state.token = token
+      // 把token存到本地存储
+      setToken(token)
     }
   },
   actions: {
