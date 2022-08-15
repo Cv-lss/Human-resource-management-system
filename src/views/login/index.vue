@@ -1,12 +1,29 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" class="login-form" label-position="left">
+    <el-form ref="loginForm" class="login-form" label-position="left" :model="loginForm" :rules="rules">
 
       <div class="title-container">
         <h3 class="title">
           <img src="@/assets/common/login-logo.png" alt="">
         </h3>
       </div>
+
+      <el-form-item prop="mobile">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input v-model="loginForm.mobile" placeholder="请输入手机号" />
+      </el-form-item>
+
+      <el-form-item prop="password">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        <el-input ref="inptPwd" v-model="loginForm.password" :type="passwordType" placeholder="请输入密码" />
+        <span class="svg-container">
+          <svg-icon :icon-class="`${passwordType==='password'? 'eye': 'eye-open'}`" @click="changePwd" />
+        </span>
+      </el-form-item>
 
       <el-button class="loginBtn" type="primary" style="width:100%;margin-bottom:30px;">Login</el-button>
 
@@ -20,10 +37,48 @@
 </template>
 
 <script>
-// import { validUsername } from '@/utils/validate'
+
+import { validMobile } from '@/utils/validate'
 
 export default {
-  name: 'Login'
+  name: 'Login',
+  data() {
+    const validatorModile = (rule, value, callback) => {
+      if (validMobile(value)) {
+        return callback()
+      }
+      return callback(new Error('手机号码格式不对'))
+    }
+    return {
+      passwordType: 'password', // 密码框默认是password
+      loginForm: { // form表单搜集数据的
+        mobile: '13800000002',
+        password: '123456'
+      },
+      rules: { // 表单校验规则
+        mobile: [
+          { required: true, message: '手机号必填', trigger: 'blur' },
+          { validator: validatorModile, trigger: 'blur' }
+          // { pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[189]))\d{8}$/, message: '手机格式不对', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '密码必填', trigger: 'blur' },
+          { min: 6, max: 16, message: '密码格式不对', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    changePwd() {
+      // 点击眼睛之后密码框变成空
+      this.passwordType === 'password' ? this.passwordType = '' : this.passwordType = 'password'
+
+      // 立即执行输入框聚焦
+      this.$nextTick(() => {
+        this.$refs.inptPwd.focus()
+      })
+    }
+  }
 
 }
 </script>
