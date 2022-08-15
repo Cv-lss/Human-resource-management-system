@@ -93,6 +93,7 @@ export default {
       // 第二种写法
       try {
         const res = await this.$refs.loginForm.validate() // 如果不传值就是返回Promise
+        this.$store.dispatch('user/login', this.loginForm)
         console.log(res)
       } catch (error) {
         console.log(error)
