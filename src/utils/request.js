@@ -15,7 +15,7 @@ service.interceptors.response.use((response) => {
   // 默认返回的是response 这里给他结构了 返回一个data就行了
   const { success, message, data } = response.data
 
-  if (!success) {
+  if (success) {
     return data
   } else {
     Message.error(message) // 提示错误信息
