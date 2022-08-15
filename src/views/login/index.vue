@@ -25,7 +25,7 @@
         </span>
       </el-form-item>
 
-      <el-button class="loginBtn" type="primary" style="width:100%;margin-bottom:30px;">Login</el-button>
+      <el-button class="loginBtn" type="primary" style="width:100%;margin-bottom:30px;" @click="login">Login</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
@@ -69,6 +69,7 @@ export default {
     }
   },
   methods: {
+    // 判断小眼睛是不是睁开还是关闭
     changePwd() {
       // 点击眼睛之后密码框变成空
       this.passwordType === 'password' ? this.passwordType = '' : this.passwordType = 'password'
@@ -77,6 +78,25 @@ export default {
       this.$nextTick(() => {
         this.$refs.inptPwd.focus()
       })
+    },
+
+    // 提交数据发送请求
+    async login() {
+      // 验证表单规则通不通过 不通过就不发送请求
+
+      // this.$refs.loginForm.validate((vali) => {
+      //   if (vali) {
+      //     // 提交数据
+      //   }
+      // })
+
+      // 第二种写法
+      try {
+        const res = await this.$refs.loginForm.validate() // 如果不传值就是返回Promise
+        console.log(res)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
