@@ -25,7 +25,7 @@
         </span>
       </el-form-item>
 
-      <el-button class="loginBtn" type="primary" style="width:100%;margin-bottom:30px;" @click="login">Login</el-button>
+      <el-button :loading="loading" class="loginBtn" type="primary" style="width:100%;margin-bottom:30px;" @click="login">Login</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
@@ -55,6 +55,7 @@ export default {
         mobile: '13800000002',
         password: '123456'
       },
+      loading: false,
       rules: { // 表单校验规则
         mobile: [
           { required: true, message: '手机号必填', trigger: 'blur' },
@@ -92,11 +93,14 @@ export default {
 
       // 第二种写法
       try {
-        const res = await this.$refs.loginForm.validate() // 如果不传值就是返回Promise
-        this.$store.dispatch('user/login', this.loginForm)
-        console.log(res)
+        await this.$refs.loginForm.validate() // 如果不传值就是返回Promise
+        this.loading = true
+        await this.$store.dispatch('user/login', this.loginForm) // 变成同步的
+        // console.log(res)
       } catch (error) {
         console.log(error)
+      } finally {
+        this.loading = false
       }
     }
   }
