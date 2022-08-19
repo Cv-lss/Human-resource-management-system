@@ -4,9 +4,13 @@ import store from '@/store'
 const whiteList = ['/login', '/404'] // 定义白名单  所有不受权限控制的页面
 
 // 路由前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // 判断里面有没有token
   if (store.getters.token) {
+    if (!store.state.user.userInfo.userId) {
+      await store.dispatch('user/getUserInfo')
+    }
+
     // 如果有token 但是还想去登录界面
     if (to.path === '/login') {
       // 就不跳转 直接在主页面
