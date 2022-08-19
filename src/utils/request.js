@@ -1,3 +1,5 @@
+import store from '@/store'
+// import { config } from '@vue/test-utils'
 import axios from 'axios'
 import { Message } from 'element-ui'
 // create an axios instance
@@ -8,7 +10,15 @@ const service = axios.create({
 })
 
 // 请求拦截器
-service.interceptors.request.use()
+service.interceptors.request.use(config => {
+  if (store.getters.token) {
+    config.headers['Authorization'] = `Bearer ${store.getters.token}`
+  }
+  return config // 不许返回出去
+}, (error) => {
+  Message.error(error.message) // 提示错误信息
+  return Promise.reject(error)
+})
 
 // 响应拦截器
 service.interceptors.response.use((response) => {

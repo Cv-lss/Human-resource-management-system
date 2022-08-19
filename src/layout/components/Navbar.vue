@@ -11,7 +11,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img src="http://destiny001.gitee.io/image/monkey_02.jpg" class="user-avatar">
-          <span>用户名</span>
+          <span>{{ username }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -40,9 +40,11 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'username'
     ])
   },
+
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
