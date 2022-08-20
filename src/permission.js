@@ -7,6 +7,7 @@ const whiteList = ['/login', '/404'] // 定义白名单  所有不受权限控�
 router.beforeEach(async(to, from, next) => {
   // 判断里面有没有token
   if (store.getters.token) {
+    // 获取用户头像的
     if (!store.state.user.userInfo.userId) {
       await store.dispatch('user/getUserInfo')
     }

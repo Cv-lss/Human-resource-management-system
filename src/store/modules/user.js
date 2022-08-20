@@ -7,7 +7,9 @@ export default {
     // token持久化从本地拿token
     token: getToken(),
     // 用户信息
-    userInfo: {}
+    userInfo: {},
+    // token超时的方法 存时间戳
+    hrsaasTime: ''
   },
 
   mutations: {
@@ -29,6 +31,11 @@ export default {
     removeToken(state) {
       state.token = null
       removeToken()
+    },
+
+    // 把时间戳存进仓库
+    sethrsaasTime(state, time) {
+      state.hrsaasTime = time
     }
   },
 
@@ -38,6 +45,8 @@ export default {
       const result = await login(data)
       console.log(result)
       commit('SETTOKEN', result)
+      // 登录成功之后把时间戳给commit
+      commit('sethrsaasTime', +new Date())
     },
     // 获取用户信息
     async   getUserInfo({ commit }) {
