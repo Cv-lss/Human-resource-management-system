@@ -1,112 +1,132 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" class="login-form" label-position="left" :model="loginForm" :rules="rules">
+    <el-form
+      ref="loginForm"
+      class="login-form"
+      label-position="left"
+      :model="loginForm"
+      :rules="rules"
+    >
 
       <div class="title-container">
         <h3 class="title">
           <img src="@/assets/common/login-logo.png" alt="">
         </h3>
       </div>
-
+      <!-- svg-container -->
       <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.mobile" placeholder="请输入手机号" />
+        <el-input v-model="loginForm.mobile" placeholder="请输入手机号码" />
       </el-form-item>
-
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input ref="inptPwd" v-model="loginForm.password" :type="passwordType" placeholder="请输入密码" />
+        <el-input ref="pwdInput" v-model="loginForm.password" :type="passwordType" placeholder="请输入密码" />
         <span class="svg-container">
-          <svg-icon :icon-class="`${passwordType==='password'? 'eye': 'eye-open'}`" @click="changePwd" />
+          <!-- passwordType 为 password  icon-class="eye"
+          passwordType 为 ''  icon-class="eye-open" -->
+          <svg-icon
+            :icon-class="`${passwordType=== 'password'?'eye':'eye-open'}`"
+            @click="changePwd"
+          />
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" class="loginBtn" type="primary" style="width:100%;margin-bottom:30px;" @click="login">Login</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        class="loginBtn"
+        style="width:100%;margin-bottom:30px;"
+        @click="login"
+      >Login</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
         <span> 密码: 123456</span>
       </div>
-
     </el-form>
   </div>
 </template>
 
 <script>
-
 import { validMobile } from '@/utils/validate'
-
 export default {
   name: 'Login',
   data() {
-    const validatorModile = (rule, value, callback) => {
+    const validatorMoblie = (rule, value, callback) => {
       if (validMobile(value)) {
         return callback()
       }
-      return callback(new Error('手机号码格式不对'))
+      return callback(new Error('手机号格式不对'))
     }
     return {
-      passwordType: 'password', // 密码框默认是password
-      loginForm: { // form表单搜集数据的
+      passwordType: 'password', //
+      loginForm: {
         mobile: '13800000002',
         password: '123456'
       },
-      loading: false, // 防止一直点击登录按钮 添加一个loding效果
-      rules: { // 表单校验规则
+      loading: false,
+      // 手机号 必填 格式 按照国家要求来
+      // 密码 必填 程度6，16
+
+      // 手机号码格式的校验 用 validator 再 实现一次
+      // 可以将验证手机号码抽取出来，放在utils的validate.js文件里
+      rules: {
         mobile: [
           { required: true, message: '手机号必填', trigger: 'blur' },
-          { validator: validatorModile, trigger: 'blur' }
-          // { pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[189]))\d{8}$/, message: '手机格式不对', trigger: 'blur' }
+          { validator: validatorMoblie, trigger: 'blur' }
+          // { pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[189]))\d{8}$/, message: '手机号格式不对', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码必填', trigger: 'blur' },
-          { min: 6, max: 16, message: '密码格式不对', trigger: 'blur' }
+          { min: 6, max: 16, message: '密码不正确', trigger: 'blur' }
         ]
       }
     }
   },
-
   methods: {
-    // 判断小眼睛是不是睁开还是关闭
+    // 切换密码框的type值
+    // 眼睛要修改
+    // 输入框focus
     changePwd() {
-      // 点击眼睛之后密码框变成空
-      this.passwordType === 'password' ? this.passwordType = '' : this.passwordType = 'password'
+      this.passwordType === 'password'
+        ? this.passwordType = '' : this.passwordType = 'password'
 
-      // 立即执行输入框聚焦
+      // 输入框focus
       this.$nextTick(() => {
-        this.$refs.inptPwd.focus()
+        this.$refs.pwdInput.focus()
       })
     },
-
-    // 提交数据发送请求
     async login() {
-      // 验证表单规则通不通过 不通过就不发送请求
-
+      // 校验表单数据
+      // form 的 validate
       // this.$refs.loginForm.validate((vali) => {
+      //   console.log(vali)
       //   if (vali) {
-      //     // 提交数据
+      //     // 提交数据的操作
       //   }
       // })
 
-      // 第二种写法
+      // 完善 点击 loading的状态
       try {
-        await this.$refs.loginForm.validate() // 如果不传值就是返回Promise
+        await this.$refs.loginForm.validate()// promise
         this.loading = true
-        await this.$store.dispatch('user/login', this.loginForm) // 变成同步的
-        // console.log(res)
+        // 提交数据的操作
+        await this.$store.dispatch('user/login', this.loginForm)
+        // this.loading = false
+        // 如何实现页面跳转
         this.$router.push('/')
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.log(e)
+        // this.loading = false
       } finally {
         this.loading = false
       }
     }
   }
-
 }
 </script>
 
@@ -171,7 +191,8 @@ $light_gray:#68b0fe;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-  background: url('~@/assets/common/login.jpg') center;
+  background-image: url('~@/assets/common/login.jpg');
+  background-position: center;
 
   .login-form {
     position: relative;
@@ -224,10 +245,10 @@ $light_gray:#68b0fe;
     user-select: none;
   }
   .loginBtn {
-  background: #407ffe;
-  height: 64px;
-  line-height: 32px;
-  font-size: 24px;
-}
+    background: #407ffe;
+    height: 64px;
+    line-height: 32px;
+    font-size: 24px;
+  }
 }
 </style>
