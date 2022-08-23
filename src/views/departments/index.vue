@@ -1,5 +1,5 @@
 <template>
-  <div class="departments-container">
+  <div v-loading="loading" class="departments-container">
     <el-card class="tree-card">
       <!-- 用了一个行列布局 -->
       <tree-tools :tree-node="company" :is-root="false" />
@@ -26,6 +26,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       departs: [],
       defaultProps: {
         label: 'name' // 表示 从这个属性显示内容
@@ -42,10 +43,12 @@ export default {
 
   methods: {
     async getDepartments() {
+      this.loading = true
       const { depts, companyName, companyManage } = await getDepartments()
       this.departs = tranListToTreeData(depts, '') // 需要将其转化成树形结构
       this.company = { name: companyName, manager: companyManage, id: '' }
       // console.log(result)
+      this.loading = false
     },
 
     addDepts(node) {
