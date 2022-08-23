@@ -7,7 +7,7 @@
     </el-card>
 
     <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
-      <tree-tools slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" @addDepts="addDepts" @editDepts="editDepts" />
+      <tree-tools slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" @addDepts="addDepts" @editDepts="editDepts" @refreshDepts="getDepartments" />
     </el-tree>
 
     <!-- //组件 -->
