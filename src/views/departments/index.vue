@@ -7,11 +7,11 @@
     </el-card>
 
     <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
-      <tree-tools slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" @addDepts="addDepts" />
+      <tree-tools slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" @addDepts="addDepts" @editDepts="editDepts" />
     </el-tree>
 
     <!-- //组件 -->
-    <add-dept :dialog-visible.sync="dialogVisible" :tree-node="currentNode" @refreshDepts="getDepartments" />
+    <add-dept ref="addDept" :dialog-visible.sync="dialogVisible" :tree-node="currentNode" @refreshDepts="getDepartments" />
   </div>
 </template>
 
@@ -50,8 +50,14 @@ export default {
 
     addDepts(node) {
       // console.log('@@@', node)
-      this.node = node // 因为node是当前的点击的部门， 此时这个部门应该记录下来,
+      this.currentNode = node // 因为node是当前的点击的部门， 此时这个部门应该记录下来,
       this.dialogVisible = true // 显示弹层
+    },
+    editDepts(node) {
+      this.currentNode = node // 因为node是当前的点击的部门， 此时这个部门应该记录下来,
+      this.dialogVisible = true // 显示弹层
+      console.log(this.$refs.addDept)
+      this.$refs.addDept.formData = { ...node } // 在标签上写ref 可以数据回显 可以拿到标签里的data定义的数据
     }
   }
 }
