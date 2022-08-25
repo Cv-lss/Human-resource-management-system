@@ -1,6 +1,6 @@
 <template>
   <div>
-    employees
+    <PageTools />
   </div>
 </template>
 
