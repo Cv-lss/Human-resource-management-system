@@ -21,6 +21,19 @@ export const constantRoutes = [
   },
 
   {
+    path: '/import',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'import',
+        component: () => import('@/views/import')
+      }
+    ]
+  },
+
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true

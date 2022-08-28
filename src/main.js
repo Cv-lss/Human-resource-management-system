@@ -18,15 +18,20 @@ import '@/permission' // permission control
 
 Vue.use(ElementUI)
 
-import components from '@/components'
-Vue.use(components)
-
 import * as directives from '@/directives'
 // 注册自定义指令
 // 遍历所有的导出的指令对象 完成自定义全局注册
 Object.keys(directives).forEach(key => {
   // 注册自定义指令
   Vue.directive(key, directives[key])
+})
+
+import components from '@/components'
+Vue.use(components)
+
+import * as filters from '@/filters'
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 Vue.config.productionTip = false
 

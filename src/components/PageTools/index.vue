@@ -3,8 +3,8 @@
     <el-card class="page-tools">
       <el-row type="flex" justify="space-between" align="middle">
         <el-col>
-          <div class="before info">
-            <i class="el-icon-info" />
+          <div :class="`before ${type}`">
+            <i v-if="showIcon" :class="`el-icon-${type}`" />
             <!-- 定义前面得插槽 -->
             <slot name="before" />
           </div>
@@ -22,8 +22,25 @@
 
 <script>
 export default {
-  name: 'Hrsaas1Index',
+  name: 'PageTools',
 
+  props: {
+    type: {
+      type: String,
+      default: 'info',
+      // value接收的就是外面传过来的 如果包含以下的值 就是真的 没有就报错
+      validator(value) {
+        if (['info', 'success', 'warning', 'error'].includes(value)) {
+          return true
+        }
+        return false
+      }
+    },
+    showIcon: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
 
@@ -58,6 +75,30 @@ export default {
           color: #409eff;
         }
       }
-    }
+
+      &.success {
+        border: 1px solid #c2e7b0;
+        background: #f0f9eb;
+        i {
+          color: #67c23a;
+        }
+      }
+
+      &.warning {
+        border: 1px solid #f5dab1;
+        background: #fdf6ec;
+        i {
+          color: #e6a23c;
+        }
+      }
+
+      &.error {
+        border: #fbc4c4;
+        background: #fef0f0;
+        i {
+          color: #f56c6c;
+        }
+      }
+  }
  }
 </style>
