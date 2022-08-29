@@ -1,20 +1,24 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">name: {{ name }}
+    </div>
+    <ImageUpload @onSuccess="handlerSuccess" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import ImageUpload from '@/components/ImageUpload/index.vue'
 
 export default {
   name: 'Dashboard',
+  components: { ImageUpload },
+
   data() {
     return {
       info: {}
     }
   },
-
   // direactives 局部注册自定义指令
   // directives: {
   //   // key: value
@@ -30,7 +34,6 @@ export default {
   //     }
   //   }
   // },
-
   computed: {
     ...mapGetters([
       'name'
@@ -52,7 +55,9 @@ export default {
     // },
   },
   methods: {
-
+    handlerSuccess({ url }) {
+      console.log(url)
+    }
   }
 }
 </script>

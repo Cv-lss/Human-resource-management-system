@@ -14,6 +14,11 @@
       <el-table border :data="list">
         <el-table-column label="序号" sortable="" width="80" type="index" center />
         <el-table-column prop="username" label="姓名" />
+        <el-table-column prop="username" label="头像">
+          <template slot-scope="{row}">
+            <img v-imgerror="require('@/assets/common/bigUserHeader.png')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px;" @click="showErCodeDialog(row.staffPhoto)">
+          </template>
+        </el-table-column>
         <el-table-column prop="workNumber" label="工号" />
         <el-table-column prop="formOfEmployment" label="聘用形式" :formatter="formatterFn" />
         <el-table-column prop="departmentName" label="部门" />
@@ -56,6 +61,10 @@
 
     <!-- //新增员工 -->
     <add-employee :visible-dialog.sync="visibleDialog" />
+
+    <el-dialog title="头像二维码" :visible.sync="ercodeDialog" width="30%" custom-class="canvaseq">
+      <canvas id="canvas" />
+    </el-dialog>
   </div>
 </template>
 
@@ -64,6 +73,7 @@ import { getEmployeeList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import addEmployee from './components/add-employee.vue'
 import { formatDate } from '@/filters'
+import QrCode from 'qrcode'
 export default {
   name: 'Employees',
   components: { addEmployee },
@@ -75,7 +85,8 @@ export default {
         page: 1,
         size: 10
       },
-      visibleDialog: false
+      visibleDialog: false,
+      ercodeDialog: false
     }
   },
 
@@ -202,10 +213,25 @@ export default {
           return ele[key]
         })
       })
+    },
+
+    async showErCodeDialog(staffPhoto) {
+      this.ercodeDialog = true
+      if (!staffPhoto) return this.$message.error('该用户还未设置头像')
+      this.ercodeDialog = true
+
+      await this.$nextTick()
+      const canvas = document.getElementById('canvas')
+      QrCode.toCanvas(canvas, staffPhoto)
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+
+.canvaseq .el-dialog__body {
+  text-align: center;
+}
 </style>
+
