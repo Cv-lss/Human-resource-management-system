@@ -38,7 +38,7 @@
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
-            <el-button type="text" size="small">角色</el-button>
+            <el-button type="text" size="small" @click="assignRole(row.id)">角色</el-button>
             <el-button type="text" size="small" @click="del(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -65,6 +65,9 @@
     <el-dialog title="头像二维码" :visible.sync="ercodeDialog" width="30%" custom-class="canvaseq">
       <canvas id="canvas" />
     </el-dialog>
+
+    <!-- 分配角色 -->
+    <assignRole v-model="assignRoleDialog" :current-user-id="currentUserId" />
   </div>
 </template>
 
@@ -72,11 +75,12 @@
 import { getEmployeeList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import addEmployee from './components/add-employee.vue'
+import assignRole from './components/assign-role.vue'
 import { formatDate } from '@/filters'
 import QrCode from 'qrcode'
 export default {
   name: 'Employees',
-  components: { addEmployee },
+  components: { addEmployee, assignRole },
   data() {
     return {
       list: [],
@@ -86,7 +90,9 @@ export default {
         size: 10
       },
       visibleDialog: false,
-      ercodeDialog: false
+      ercodeDialog: false,
+      assignRoleDialog: false, // f分配角色弹窗
+      currentUserId: ''
     }
   },
 
@@ -223,6 +229,12 @@ export default {
       await this.$nextTick()
       const canvas = document.getElementById('canvas')
       QrCode.toCanvas(canvas, staffPhoto)
+    },
+
+    // 分配角色
+    assignRole(id) {
+      this.assignRoleDialog = true
+      this.currentUserId = id
     }
   }
 }
