@@ -3,6 +3,7 @@ import Layout from '@/layout'
 
 const attendRouter = {
   path: '/attendances',
+  meta: { id: 'attendances' },
   component: Layout,
   name: 'attendances',
   children: [

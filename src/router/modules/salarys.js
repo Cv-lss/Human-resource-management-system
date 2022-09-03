@@ -4,7 +4,7 @@ import Layout from '@/layout'
 const salaryRouter = {
   path: '/salarys',
   component: Layout,
-  name: 'salarys',
+  meta: { id: 'salarys' },
   children: [
     {
       path: '',

@@ -4,7 +4,7 @@ import Layout from '@/layout'
 export default {
   path: '/social_securitys',
   component: Layout,
-  name: 'social_securitys',
+  meta: { id: 'social_securitys' },
   children: [
     {
       path: '',
