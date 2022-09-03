@@ -9,7 +9,7 @@ import salarys from './modules/salarys'
 import setting from './modules/setting'
 import social from './modules/social'
 Vue.use(Router)
-const syncRouter = [approvals, attendances, departments, employees, permission, salarys, setting, social]
+export const syncRouter = [approvals, attendances, departments, employees, permission, salarys, setting, social]
 /* Layout */
 import Layout from '@/layout'
 
@@ -49,19 +49,19 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
-  },
+  }
 
   // ...syncRouter,
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   // 临时合并路由
-  routes: [...constantRoutes, ...syncRouter]
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()

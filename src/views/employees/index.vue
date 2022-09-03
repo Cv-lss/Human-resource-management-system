@@ -3,7 +3,7 @@
     <PageTools>
       <span slot="before">共{{ total }}条记录</span>
       <template slot="after">
-        <el-button size="small" type="warning" @click="$router.push('/import?type=user')">导入</el-button>
+        <el-button size="small" type="warning" :disabled="!checkPermission('POINT-USER-UPDATE')" @click="$router.push('/import?type=user')">导入</el-button>
         <el-button size="small" type="danger" @click="exportData">导出</el-button>
         <el-button size="small" type="primary" @click="add">新增员工</el-button>
       </template>
