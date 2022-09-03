@@ -37,6 +37,10 @@ Object.keys(filters).forEach(key => {
 // 打印
 import Print from 'vue-print-nb'
 Vue.use(Print)
+
+// 全局混入
+import checkPermission from '@/mixin/checkPermission'
+Vue.mixin(checkPermission)
 Vue.config.productionTip = false
 
 new Vue({

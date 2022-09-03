@@ -2,7 +2,7 @@
   <div>
     <el-card class="page-tools">
       <el-row type="flex" justify="space-between" align="middle">
-        <el-col>
+        <el-col v-if="show">
           <div :class="`before ${type}`">
             <i v-if="showIcon" :class="`el-icon-${type}`" />
             <!-- 定义前面得插槽 -->
@@ -37,6 +37,10 @@ export default {
       }
     },
     showIcon: {
+      type: Boolean,
+      default: true
+    },
+    show: {
       type: Boolean,
       default: true
     }

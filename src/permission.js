@@ -9,7 +9,9 @@ router.beforeEach(async(to, from, next) => {
   if (store.getters.token) {
     // 获取用户头像的
     if (!store.state.user.userInfo.userId) {
-      await store.dispatch('user/getUserInfo')
+      const { roles: { menus }} = await store.dispatch('user/getUserInfo')
+      store.dispatch('permission/filterRoutes', menus)
+      next(to.path)
     }
 
     // 如果有token 但是还想去登录界面

@@ -1,5 +1,6 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { setToken, getToken, removeToken } from '@/utils/auth' // 引入封装好的本地存储
+import { resetRouter } from '@/router'
 export default {
   namespaced: true,
 
@@ -57,13 +58,14 @@ export default {
       // 把两个返回值合并
       const baseResult = { ...res, ...UserDetai }
       commit('SETUSERINFO', baseResult)
-      // return res // 这里如果返回出去了 会有一个问题
+      return res // 这里如果返回出去了 会有一个问题
     },
 
     // 退出
     logout({ commit }) {
       commit('removeToken')
       commit('removeUserInfo')
+      resetRouter()
     }
   }
 }

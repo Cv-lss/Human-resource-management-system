@@ -20,7 +20,7 @@
             <el-table-column prop="description" label="描述" />
             <el-table-column label="操作" width="320">
               <template slot-scope="{row}">
-                <el-button size="small" type="success">分配权限</el-button>
+                <el-button size="small" type="success" @click="btnPermOK(row)">分配权限</el-button>
                 <el-button size="small" type="primary" @click="edit(row)">编辑</el-button>
                 <el-button size="small" type="danger" @click="deleteRole(row.id)">删除</el-button>
               </template>
@@ -79,6 +79,9 @@
     </el-card>
 
     <role-dialog ref="roleDialog" :dialog-visible.sync="dialogVisible" />
+
+    <!-- 分配权限 -->
+    <managerPermission ref="managerPermission" :dialog-visible.sync="dialogVisible1" />
   </div>
 </template>
 
@@ -86,9 +89,10 @@
 import { mapGetters } from 'vuex'
 import { getRoleList, deleteRole, getCompanyInfo } from '@/api/setting'
 import roleDialog from './components/roleDialog.vue'
+import managerPermission from './components/manager-permission.vue'
 export default {
   name: 'Hrsaas1Index',
-  components: { roleDialog },
+  components: { roleDialog, managerPermission },
   data() {
     return {
       page: {
@@ -99,7 +103,8 @@ export default {
       total: 0,
       loading: false,
       dialogVisible: false,
-      formData: {}
+      formData: {},
+      dialogVisible1: false
     }
   },
   computed: {
@@ -159,6 +164,12 @@ export default {
     // 获取的公司的信息
     async getCompanyInfo() {
       this.formData = await getCompanyInfo(this.companyId)
+    },
+
+    // 分配权限
+    async  btnPermOK(row) {
+      await this.$refs.managerPermission.getPermissionList(row.id)
+      this.dialogVisible1 = true
     }
   }
 }
