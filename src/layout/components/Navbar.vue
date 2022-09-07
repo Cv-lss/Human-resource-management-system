@@ -8,6 +8,9 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+
+      <ScreenFull class="right-menu-item" />
+
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imgerror="defaultImg" :src="staffPhoto" class="user-avatar">
@@ -32,10 +35,12 @@ import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import defaultImg from '@/assets/common/head.jpg'
+import ScreenFull from '@/components/ScreenFull'
 export default {
   components: {
     // Breadcrumb,
-    Hamburger
+    Hamburger,
+    ScreenFull
   },
   data() {
     return {
@@ -98,6 +103,7 @@ export default {
     }
 
     .right-menu-item {
+      vertical-align: middle;
       display: inline-block;
       padding: 0 8px;
       height: 100%;
